@@ -7,6 +7,11 @@
 *
 * Note: leaving the string empty is the same thing as the normal module
 *       require call.
+*
+* Note: nModRoot uses the replace function at declaration to check for any
+*       backslashes "\" so they can be replaced with forward slashes. It is
+*       expected to just copy the string directly from the command promt
+        without making any changes to it.
 */
 //const nModRoot = String.raw``.replace(/\\/g,"/");// typical declaration
 //const nModRoot = String.raw`C:\Users`.replace(/\\/g,"/"); // example call
@@ -16,10 +21,12 @@ const nModRoot = String.raw`C:\Users\tugbo\AppData\Roaming\npm\node_modules`.rep
 * module call function to simplify module declaration.
 */
 function modCall(moduleName) {
+  let slash = '/';
+  if (nModRoot == ``) slash = '';// Checking if slash required
   try {
-    const dirString = `${nModRoot}/${moduleName}`
+    const dirString = `${nModRoot}${slash}${moduleName}`
     const mod = require(dirString);
-    console.log(dirString);
+    console.log(`Required ${moduleName}   |  ${dirString}`);
     return mod;
   } catch (e) {
     console.log("error: ", e);
@@ -54,3 +61,9 @@ app.use(express.static('website'));
 
 
 // Setup Server
+const PORT = 3000;
+function listening(err) {
+  if (err) console.log("Error in server setup");
+  console.log(`Server listening on port ${PORT}`);
+}
+const server = app.listen(PORT, listening);
