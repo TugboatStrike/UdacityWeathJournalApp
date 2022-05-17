@@ -67,3 +67,19 @@ function listening(err) {
   console.log(`Server listening on port ${PORT}`);
 }
 const server = app.listen(PORT, listening);
+
+// Route Functions
+
+// Send all projectData
+function sendData(req, res) {
+  console.log("request: ",req.body);
+  res.send(projectData);
+  console.log("request: ",req.body);
+  console.log("response: ",res.body);
+}
+
+
+
+// Route calls
+
+app.get('/all', sendData); // send all projectData
