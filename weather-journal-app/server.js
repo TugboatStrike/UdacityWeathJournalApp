@@ -42,6 +42,10 @@ const express = modCall('express');
 const bodyParser = modCall('body-parser');
 const cors = modCall('cors')
 
+// .env used to remove key from code. the dotenv is required to process.env
+modCall('dotenv').config();
+//console.log(process.env.OPEN_WEATHER_MAP_UDACITY_KEY);
+
 
 // Start up an instance of app
 
