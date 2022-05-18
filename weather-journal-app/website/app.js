@@ -21,49 +21,68 @@ document.getElementById('generate').addEventListener('click', performAction);
 
 
 async function performAction(evt){
- //getAnimalDemo(baseURL,newAnimal, apiKey)
- evt.preventDefault();
- //event.preventDefault(); // ?? i don't thinnk this needs to be event.
- console.log('clicked button!');
- console.log(evt);
- let testWeather = await getWeather(80237);
- console.log('test weather: ', testWeather);
+  //getAnimalDemo(baseURL,newAnimal, apiKey)
+  //evt.preventDefault();
+  //event.preventDefault(); // ?? i don't thinnk this needs to be event.
+  //console.log('clicked button!');
+  //console.log(evt);
+  const zip = getZip();
+  const content = getContent();
+  const [coords, coordsHealth] = await getCoords(zip);
+  //console.log(coordsHealth, coords);
+  let weather = {};
+  if (coordsHealth) {
+    //console.log('get weather start');
+    weather = await getWeather(coords);
+    console.log(weather);
+  }
+  //console.log(zip);
+  //console.log(zipHealth);
+}
+
+
+function getZip(){
+  const zipObj = document.getElementById('zip');
+  let zipVal = zipObj.value;
+  return zipVal;
+}
+
+
+function getContent(){
+  //const contentObj = document.getElementById('feelings');
+  const contentObj = document.querySelector('#feelings');
+  let contentVal = contentObj.value;
+  console.log(contentVal);
+  return contentVal;
 }
 
 
 // Get Weather from OpenWeatherMap API connections
-const getWeather = async (zip)=> {
+const getCoords = async (zip)=> {
   const countryCode = 'US'; // using ISO 3166 Alpha-2 code. assumed US
   const zipOwmUrl = `http://api.openweathermap.org/geo/1.0/zip?zip=${zip},${countryCode}&appid=${apiKey}`;
-  let workData = fetch(zipOwmUrl)
-    //.then(function(res){ return res.json() })
-    // convert workData to JSON
-    .then(res => res.json()).catch( e => console.log("err1:",e))
-    // Create Url from workData.lat and workData.lon JSON data
-    .then(coordsUrl => `https://api.openweathermap.org/data/2.5/weather?lat=${coordsUrl.lat}&lon=${coordsUrl.lon}&appid=${apiKey}`)
-    .catch( e => console.log("err2: ",e))
-    // Weather API Fetch using workData with coordinates url
-    .then(wOwmUrl => fetch(wOwmUrl)).catch( e => console.log("err4:",e))
-    // Convert API workData to JSON
-    .then(wData => wData.json()).catch( e => console.log("err5:",e))
-    /*
-    // Display JSON data
-    .then(function(weatherJson){
-      //console.log(weatherJson);
-      console.log('testing 1');
-      return weatherJson;
-    }).catch( e => console.log("err6:",e))*/
-  //console.log('workData?');
-  //console.log(workData);
-  //console.log('end workData');
-  //console.log('testing 2');
-  return workData;
+  let apiHealth = true;
+  // API fetch the coordinates using the zip code.
+  const workData = await fetch(zipOwmUrl)
+  // convert workData to JSON
+  .then(res => res.json()).catch( e => console.log("err1:",e))
+  // Check JSON data for cod property. if so assume bad zipcode.
+  if (workData.hasOwnProperty('cod')) {
+    console.log(workData);
+    alert("Invalid zip code. Please enter a valid zip code.")
+    apiHealth = false;
+  }
+  return [workData, apiHealth];
 }
 
-let weather = getWeather(80237)
-  .then(weatherDataTesting => {
-    console.log('workData?');
-    console.log(weatherDataTesting)
-    console.log(weatherDataTesting.main.temp);
-    console.log('end workData');
-  }).catch( e => console.log("err9:",e))
+
+// API Function call using healthy coordinates to get weather data.
+async function getWeather(coordsObj) {
+  coordsUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${coordsObj.lat}&lon=${coordsObj.lon}&appid=${apiKey}`;
+  // api call for weather data
+  const weatherData = await fetch(coordsUrl)
+    .catch( e => console.log("err2: ",e))
+    // Convert API workData to JSON
+    .then(wData => wData.json()).catch( e => console.log("err5:",e))
+  return weatherData;
+}

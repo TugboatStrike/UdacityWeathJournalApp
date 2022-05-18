@@ -16,6 +16,7 @@
 //const nModRoot = String.raw``.replace(/\\/g,"/");// typical declaration
 //const nModRoot = String.raw`C:\Users`.replace(/\\/g,"/"); // example call
 const nModRoot = String.raw`C:\Users\tugbo\AppData\Roaming\npm\node_modules`.replace(/\\/g,"/");
+//const nModRoot = String.raw`${process.env.NPM_NODE_MODULES}`.replace(/\\/g,"/");
 
 /**
 * module call function to simplify module declaration.
