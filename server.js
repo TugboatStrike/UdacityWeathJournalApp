@@ -13,9 +13,9 @@
 *       expected to just copy the string directly from the command promt
         without making any changes to it.
 */
-const nModRoot = String.raw``.replace(/\\/g,"/");// typical Normal declaration
+//const nModRoot = String.raw``.replace(/\\/g,"/");// typical Normal declaration
 //const nModRoot = String.raw`C:\Users`.replace(/\\/g,"/"); // example call
-//const nModRoot = String.raw`C:\Users\tugbo\AppData\Roaming\npm\node_modules`.replace(/\\/g,"/");
+const nModRoot = String.raw`C:\Users\tugbo\AppData\Roaming\npm\node_modules`.replace(/\\/g,"/");
 
 
 
