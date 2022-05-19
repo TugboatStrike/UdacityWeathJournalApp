@@ -16,25 +16,34 @@ document.getElementById('generate').addEventListener('click', performAction);
 
 // Action performed from pressing Generate
 async function performAction(evt){
-  let sData = {};
   const [coords, coordsHealth] = await getCoords(getZip());
   // check that zip code returns valid information
   if (coordsHealth) {
-    let weather = await getWeather(coords);
-    sData["temp"] = weather.main.temp;
-    sData["content"] = getContent();
-    sData["date"] = newDate;
-    retrieveData()
+    let weather = await getWeather(coords)
+    .then(someObject => fillData(someObject))
+    .then(sData => postData('/postData', sData))
+    .then(placeHoldTemp => retrieveData())
+    /**
+    * NOTE: using the .then without the arrow function allows for a race
+    *       condition. simply using .then doesn't mean it will run in
+    *       order but adding the arrow function assignment seems to fix this
+    * .then(retrieveData()) // runs out of order!!!
+    */
   }
-  const testPost = await postData('/postData', sData);
-  console.log('postData waited?');
+}
+
+
+function fillData(weatherInfo){
+  dataObj = {};
+  dataObj["temp"] = weatherInfo.main.temp;
+  dataObj["content"] = getContent();
+  dataObj["date"] = newDate;
+  return dataObj;
 }
 
 
 function getZip(){
   const zipObj = document.getElementById('zip');
-  //let zipVal = zipObj.value;
-  //return zipVal;
   return zipObj.value;
 }
 
@@ -96,11 +105,11 @@ const retrieveData = async () =>{
   try {
     // Transform into JSON
     const allData = await request.json()
-    console.log(allData)
+    console.log('retrieveData', allData)
     // Write updated data to DOM elements
     document.getElementById('temp').innerHTML = Math.round(allData.temp)+ 'degrees';
     document.getElementById('content').innerHTML = allData.content;
-    document.getElementById("date").innerHTML =allData.date;
+    document.getElementById("date").innerHTML =allData.date+' count:'+allData.count;
   }
   catch(error) {
     console.log("error", error);
@@ -120,7 +129,7 @@ const postData = async (url ='', data = {}) =>{
     },
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   });
-  const newData = await responseMaybe.json();
+  //const newData = await responseMaybe.json();
   //console.log(newData);
-  return newData;
+  //return newData;
 }
