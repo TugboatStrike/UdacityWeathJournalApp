@@ -68,48 +68,24 @@ app.use(express.static('website'));
 // Setup Server
 const PORT = process.env.SERVER_PORT;
 
+
 function listening(err) {
   if (err) console.log("Error in server setup");
   console.log(`Server listening on port ${PORT}`);
 }
+
 const server = app.listen(PORT, listening);
 
 // Route Functions
 
 // Send all projectData
 function sendData(req, res) {
-  console.log("request: ",req.body);
   res.send(projectData);
-  console.log("request: ",req.body);
-  console.log("response: ",res.body);
 }
 
 
-/*
-function callBack(req,res){
-  res.send('POST received');
-}*/
-
-const data = [];
-
 function addData(req, res){
-  console.log('req: ', req.body);
-  console.log('res: ', res.body);
-  /*
-  console.log(data);
-  data.push(req.body);
-  //projectData.push(req.body);
-  console.log(data);
-  res.send(data);*/
-
-  console.log(projectData);
-  //data.push(req.body);
-  //let newData = req.body;
-  //newData = JSON.stringify(newData);
-  //projectData = newData;
   projectData = JSON.stringify(req.body);
-  //projectData.push(newData);
-  console.log(projectData);
   res.send(projectData);
 }
 // Route calls
@@ -119,7 +95,3 @@ app.get('/all', sendData); // send all projectData
 
 // POST route
 app.post('/postData', addData);
-/*app.post('/add', callBack);
-
-// PUSH data
-app.post('/postData', addData);*/
