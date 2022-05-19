@@ -20,9 +20,10 @@ async function performAction(evt){
   // check that zip code returns valid information
   if (coordsHealth) {
     let weather = await getWeather(coords)
-    .then(someObject => fillData(someObject))
+    .then(someObject => fillData(someObject)).catch(e=>console.log('err1',e))
     .then(sData => postData('/postData', sData))
-    .then(placeHoldTemp => retrieveData())
+    .catch(e=>console.log('err2',e))
+    .then(placeHoldTemp => retrieveData()).catch(e=>console.log('err3',e))
     /**
     * NOTE: using the .then without the arrow function allows for a race
     *       condition. simply using .then doesn't mean it will run in
@@ -49,11 +50,7 @@ function getZip(){
 
 
 function getContent(){
-  //const contentObj = document.getElementById('feelings');
   const contentObj = document.querySelector('#feelings');
-  //let contentVal = contentObj.value;
-  //console.log(contentVal);
-  //return contentVal;
   return contentObj.value;
 }
 
@@ -90,22 +87,12 @@ async function getWeather(coordsObj) {
 
 
 // Server command functions
-/*
-const retrieveData = async (url="") =>{
-  //console.log(url);
-  const request = await fetch(url)
-  //const allData = await request.json();
-    .then(allData => allData.json())
-    .catch( e => console.log("err30: ",e))
-  //console.log(allData);
-  return request;
-}*/
+
 const retrieveData = async () =>{
   const request = await fetch('/all');
   try {
     // Transform into JSON
     const allData = await request.json()
-    console.log('retrieveData', allData)
     // Write updated data to DOM elements
     document.getElementById('temp').innerHTML = Math.round(allData.temp)+ 'degrees';
     document.getElementById('content').innerHTML = allData.content;
@@ -118,9 +105,8 @@ const retrieveData = async () =>{
 }
 
 
-
 const postData = async (url ='', data = {}) =>{
-  const responseMaybe = await fetch(url, {
+  const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     credentials: 'same-origin', // no-cors, *cors, same-origin
     headers: {
@@ -129,7 +115,6 @@ const postData = async (url ='', data = {}) =>{
     },
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   });
-  //const newData = await responseMaybe.json();
-  //console.log(newData);
-  //return newData;
+  const newData = await response.json();
+  return newData;
 }
