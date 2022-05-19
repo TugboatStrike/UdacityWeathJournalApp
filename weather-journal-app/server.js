@@ -85,6 +85,39 @@ function sendData(req, res) {
 
 
 
+function callBack(req,res){
+  res.send('POST received');
+}
+
+const data = [];
+
+function addData(req, res){
+  console.log('req: ', req.body);
+  console.log('res: ', res.body);
+  /*
+  console.log(data);
+  data.push(req.body);
+  //projectData.push(req.body);
+  console.log(data);
+  res.send(data);*/
+
+  console.log(projectData);
+  //data.push(req.body);
+  //let newData = req.body;
+  //newData = JSON.stringify(newData);
+  //projectData = newData;
+  projectData = JSON.stringify(req.body);
+  //projectData.push(newData);
+  console.log(projectData);
+  res.send(projectData);
+}
 // Route calls
 
+// GET route
 app.get('/all', sendData); // send all projectData
+
+// POST route
+app.post('/add', callBack);
+
+// PUSH data
+app.post('/postData', addData);

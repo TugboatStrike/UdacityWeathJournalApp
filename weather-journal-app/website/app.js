@@ -21,39 +21,63 @@ document.getElementById('generate').addEventListener('click', performAction);
 
 
 async function performAction(evt){
+  let sData = {};
   //getAnimalDemo(baseURL,newAnimal, apiKey)
   //evt.preventDefault();
   //event.preventDefault(); // ?? i don't thinnk this needs to be event.
   //console.log('clicked button!');
   //console.log(evt);
-  const zip = getZip();
-  const content = getContent();
-  const [coords, coordsHealth] = await getCoords(zip);
+
+  //sData["zip"] = getZip();
+  //const [coords, coordsHealth] = await getCoords(sData["zip"]);
+  //sData["zip"] = getZip();
+  const [coords, coordsHealth] = await getCoords(getZip());
   //console.log(coordsHealth, coords);
-  let weather = {};
+  //let weather = {};
   if (coordsHealth) {
     //console.log('get weather start');
-    weather = await getWeather(coords);
-    console.log(weather);
+    let weather = await getWeather(coords);
+    //console.log(sData);
+    //console.log(weather);
+    sData["temp"] = weather.main.temp;
+    //console.log(weather.main.temp);
+    sData["content"] = getContent();
+    sData["date"] = newDate;
+
   }
-  //console.log(zip);
-  //console.log(zipHealth);
+  //console.log(sData);
+  //console.log(JSON.stringify(sData));
+
+  const testPost = await postData('/postData', sData);
+  console.log('test post');
+  console.log(testPost);
+  console.log('end post');
+  //console.log(sData);
+  //console.log(JSON.stringify(sData));
+
+  //const testAll = await retrieveData('/all');
+  //console.log('test all');
+  //console.log(testAll);
+  //console.log('end all');
+
 }
 
 
 function getZip(){
   const zipObj = document.getElementById('zip');
-  let zipVal = zipObj.value;
-  return zipVal;
+  //let zipVal = zipObj.value;
+  //return zipVal;
+  return zipObj.value;
 }
 
 
 function getContent(){
   //const contentObj = document.getElementById('feelings');
   const contentObj = document.querySelector('#feelings');
-  let contentVal = contentObj.value;
-  console.log(contentVal);
-  return contentVal;
+  //let contentVal = contentObj.value;
+  //console.log(contentVal);
+  //return contentVal;
+  return contentObj.value;
 }
 
 
@@ -85,4 +109,32 @@ async function getWeather(coordsObj) {
     // Convert API workData to JSON
     .then(wData => wData.json()).catch( e => console.log("err5:",e))
   return weatherData;
+}
+
+
+// Server command functions
+const retrieveData = async (url="") =>{
+  //console.log(url);
+  const request = await fetch(url)
+  //const allData = await request.json();
+    .then(allData => allData.json())
+    .catch( e => console.log("err30: ",e))
+  //console.log(allData);
+  return request;
+}
+
+
+const postData = async (url ='', data = {}) =>{
+  const responseMaybe = await fetch(url, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    credentials: 'same-origin', // no-cors, *cors, same-origin
+    headers: {
+      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  const newData = await responseMaybe.json();
+  //console.log(newData);
+  return newData;
 }
