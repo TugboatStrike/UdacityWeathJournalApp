@@ -43,7 +43,7 @@ async function performAction(evt){
     //console.log(weather.main.temp);
     sData["content"] = getContent();
     sData["date"] = newDate;
-    console.log(sData);
+    //console.log(sData);
     retrieveData()
     //updateEntry(sData);
   }
@@ -51,9 +51,9 @@ async function performAction(evt){
   //console.log(JSON.stringify(sData));
 
   const testPost = await postData('/postData', sData);
-  console.log('test post');
-  console.log(testPost);
-  console.log('end post');
+  //console.log('test post');
+  //console.log(testPost);
+  //console.log('end post');
   //console.log(sData);
   //console.log(JSON.stringify(sData));
 

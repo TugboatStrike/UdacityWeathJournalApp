@@ -16,11 +16,10 @@
 //const nModRoot = String.raw``.replace(/\\/g,"/");// typical declaration
 //const nModRoot = String.raw`C:\Users`.replace(/\\/g,"/"); // example call
 const nModRoot = String.raw`C:\Users\tugbo\AppData\Roaming\npm\node_modules`.replace(/\\/g,"/");
-//const nModRoot = String.raw`${process.env.NPM_NODE_MODULES}`.replace(/\\/g,"/");
 
-/**
-* module call function to simplify module declaration.
-*/
+
+
+// module call function to simplify module declaration.
 function modCall(moduleName) {
   let slash = '/';
   if (nModRoot == ``) slash = '';// Checking if slash required
@@ -45,17 +44,17 @@ const cors = modCall('cors')
 
 // .env used to remove key from code. the dotenv is required to process.env
 modCall('dotenv').config();
-//console.log(process.env.OPEN_WEATHER_MAP_UDACITY_KEY);
+// console.log(process.env.OPEN_WEATHER_MAP_UDACITY_KEY);
 
 
 // Start up an instance of app
-
 const app = express();
+
 
 /* Middleware*/
 
 
-//Here we are configuring express to use body-parser as middle-ware.
+// Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -66,7 +65,8 @@ app.use(express.static('website'));
 
 
 // Setup Server
-const PORT = 3000;
+const PORT = process.env.SERVER_PORT;
+
 function listening(err) {
   if (err) console.log("Error in server setup");
   console.log(`Server listening on port ${PORT}`);
