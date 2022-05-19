@@ -43,7 +43,9 @@ async function performAction(evt){
     //console.log(weather.main.temp);
     sData["content"] = getContent();
     sData["date"] = newDate;
-
+    console.log(sData);
+    retrieveData()
+    //updateEntry(sData);
   }
   //console.log(sData);
   //console.log(JSON.stringify(sData));
@@ -113,6 +115,7 @@ async function getWeather(coordsObj) {
 
 
 // Server command functions
+/*
 const retrieveData = async (url="") =>{
   //console.log(url);
   const request = await fetch(url)
@@ -121,7 +124,24 @@ const retrieveData = async (url="") =>{
     .catch( e => console.log("err30: ",e))
   //console.log(allData);
   return request;
+}*/
+const retrieveData = async () =>{
+  const request = await fetch('/all');
+  try {
+    // Transform into JSON
+    const allData = await request.json()
+    console.log(allData)
+    // Write updated data to DOM elements
+    document.getElementById('temp').innerHTML = Math.round(allData.temp)+ 'degrees';
+    document.getElementById('content').innerHTML = allData.content;
+    document.getElementById("date").innerHTML =allData.date;
+  }
+  catch(error) {
+    console.log("error", error);
+    // appropriately handle the error
+  }
 }
+
 
 
 const postData = async (url ='', data = {}) =>{

@@ -84,10 +84,10 @@ function sendData(req, res) {
 }
 
 
-
+/*
 function callBack(req,res){
   res.send('POST received');
-}
+}*/
 
 const data = [];
 
@@ -117,7 +117,8 @@ function addData(req, res){
 app.get('/all', sendData); // send all projectData
 
 // POST route
-app.post('/add', callBack);
+app.post('/postData', addData);
+/*app.post('/add', callBack);
 
 // PUSH data
-app.post('/postData', addData);
+app.post('/postData', addData);*/
