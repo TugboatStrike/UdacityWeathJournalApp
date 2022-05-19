@@ -36,6 +36,7 @@ function modCall(moduleName) {
 
 // Setup empty JS object to act as endpoint for all routes
 projectData = {};
+let count = 0;
 
 // Require Express to run server and routes
 const express = modCall('express');
@@ -85,7 +86,11 @@ function sendData(req, res) {
 
 
 function addData(req, res){
-  projectData = JSON.stringify(req.body);
+  count += 1;
+  projectData['date'] = req.body.date;
+  projectData['content'] = req.body.content;
+  projectData['temp'] = req.body.temp;
+  projectData['count'] = count;
   res.send(projectData);
 }
 // Route calls

@@ -8,60 +8,26 @@ const apiKey = 'f41274d433dda89b92ea0f6ddd894eec&units=imperial';
 // Create a new date instance dynamically with JS
 let d = new Date();
 let newDate = (d.getMonth()+1) +'.'+ d.getDate()+'.'+ d.getFullYear();
-console.log(newDate);
 
 
-/* WEB API WITH FETCH DEMO--  */
-//let baseURL = 'http://api.animalinfo.org/data/?animal='
-//let apiKey = '&appid=9f15e45060...';
-//const newAnimal =  document.getElementById('animal').value;
-
-//using generate button to activate functions for testing.
+// Using generate button to activate functions
 document.getElementById('generate').addEventListener('click', performAction);
 
 
+// Action performed from pressing Generate
 async function performAction(evt){
   let sData = {};
-  //getAnimalDemo(baseURL,newAnimal, apiKey)
-  //evt.preventDefault();
-  //event.preventDefault(); // ?? i don't thinnk this needs to be event.
-  //console.log('clicked button!');
-  //console.log(evt);
-
-  //sData["zip"] = getZip();
-  //const [coords, coordsHealth] = await getCoords(sData["zip"]);
-  //sData["zip"] = getZip();
   const [coords, coordsHealth] = await getCoords(getZip());
-  //console.log(coordsHealth, coords);
-  //let weather = {};
+  // check that zip code returns valid information
   if (coordsHealth) {
-    //console.log('get weather start');
     let weather = await getWeather(coords);
-    //console.log(sData);
-    //console.log(weather);
     sData["temp"] = weather.main.temp;
-    //console.log(weather.main.temp);
     sData["content"] = getContent();
     sData["date"] = newDate;
-    //console.log(sData);
     retrieveData()
-    //updateEntry(sData);
   }
-  //console.log(sData);
-  //console.log(JSON.stringify(sData));
-
   const testPost = await postData('/postData', sData);
-  //console.log('test post');
-  //console.log(testPost);
-  //console.log('end post');
-  //console.log(sData);
-  //console.log(JSON.stringify(sData));
-
-  //const testAll = await retrieveData('/all');
-  //console.log('test all');
-  //console.log(testAll);
-  //console.log('end all');
-
+  console.log('postData waited?');
 }
 
 
