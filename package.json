@@ -1,0 +1,21 @@
+{
+  "name": "byronweatherjournal",
+  "version": "1.0.0",
+  "description": "This project requires you to create an asynchronous web app that uses Web API and user data to dynamically update the UI.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TugboatStrike/UdacityWeathJournalApp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TugboatStrike/UdacityWeathJournalApp/issues"
+  },
+  "homepage": "https://github.com/TugboatStrike/UdacityWeathJournalApp#readme"
+}

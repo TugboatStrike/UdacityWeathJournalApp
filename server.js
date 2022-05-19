@@ -44,7 +44,7 @@ const bodyParser = modCall('body-parser');
 const cors = modCall('cors')
 
 // .env used to remove key from code. the dotenv is required to process.env
-modCall('dotenv').config();
+//modCall('dotenv').config();
 // console.log(process.env.OPEN_WEATHER_MAP_UDACITY_KEY);
 
 
@@ -67,7 +67,9 @@ app.use(express.static('website'));
 
 
 // Setup Server
-const PORT = process.env.SERVER_PORT;
+// when setting up using the .env file
+// const PORT = process.env.SERVER_PORT;
+const PORT = 3000;
 
 
 function listening(err) {
